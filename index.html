@@ -1,233 +1,355 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Aryan Rae</title>
-  <meta name="description" content="Aryan Rae — Product & Supply Chain Tech" />
+  <meta name="description" content="Aryan Rae — Product • Ops Tooling • Analytics" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
-  <div class="page">
-    <header class="topbar">
-      <div class="topwrap">
-        <div class="toplinks">
-          <a class="toplink" href="https://www.linkedin.com/in/aryanrae/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <span class="sep">·</span>
-          <a class="toplink" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer">GitHub</a>
-          <span class="sep">·</span>
-          <a class="toplink" href="mailto:aryan.rae@outlook.com">Email</a>
-        </div>
-        <a class="resume" href="./resume.pdf" target="_blank" rel="noreferrer">Resume</a>
-      </div>
-    </header>
+  <!-- background -->
+  <div class="bg" aria-hidden="true">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+    <div class="grid"></div>
+    <div class="grain"></div>
+  </div>
 
-    <main class="wrap">
-      <section class="hero">
-        <h1 class="title">Aryan Rae</h1>
-        <p class="subtitle">
-          Product-focused builder working at the intersection of supply chain, ops tooling, and analytics — shipping practical systems that reduce friction and improve throughput.
+  <!-- scroll progress -->
+  <div class="progress" aria-hidden="true"><span id="pfill"></span></div>
+
+  <!-- top bar -->
+  <header class="top">
+    <div class="top__inner">
+      <a class="brand" href="#top" aria-label="Home">
+        <span class="brand__mark">A</span>
+        <span class="brand__text">Aryan Rae</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#now">Now</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="actions">
+        <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle theme">
+          <span class="dot"></span>
+        </button>
+        <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="drawer" id="drawer" aria-hidden="true">
+      <a href="#about">About</a>
+      <a href="#now">Now</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+    <!-- HERO -->
+    <section class="hero reveal">
+      <div class="hero__main">
+        <p class="eyebrow">Product • Ops Tooling • Analytics</p>
+
+        <h1 class="h1">
+          Building systems that feel
+          <span class="grad">inevitable</span>.
+        </h1>
+
+        <p class="lead">
+          I like clean execution: crisp problem definition, robust edge-cases, and tools that teams actually adopt.
         </p>
 
-        <div class="latest">
-          <div class="latest-block">
-            <h3 class="k">Latest Experience.</h3>
-            <div class="item">
-              <div class="item-title">Licious</div>
-              <div class="item-sub">Product Management Intern (PS-2) — Ops / Supply Chain Tech</div>
-              <div class="item-meta">2025</div>
-              <p class="item-desc">
-                Owned internal ops tooling and workflows to improve inventory movement and operational reliability; converted work into a PPO.
-              </p>
-            </div>
-          </div>
+        <div class="cta">
+          <a class="btn" href="#projects">
+            <span>See projects</span>
+            <span class="arrow">→</span>
+          </a>
+          <a class="btn ghost" href="#contact">Contact</a>
+        </div>
 
-          <div class="latest-block">
-            <h3 class="k">Latest Education.</h3>
-            <div class="item">
-              <div class="item-title">BITS Pilani, Hyderabad Campus</div>
-              <div class="item-sub">B.E. (Batch 2022)</div>
-              <div class="item-meta">2022 – 2026</div>
-            </div>
-          </div>
+        <div class="minirow">
+          <a class="mini" href="https://www.linkedin.com/in/aryanrae/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <span class="sep">·</span>
+          <a class="mini" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer">GitHub</a>
+          <span class="sep">·</span>
+          <a class="mini" href="./resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+        </div>
+      </div>
 
-          <div class="latest-block">
-            <h3 class="k">Skillset.</h3>
-            <div class="pillrow">
-              <span class="pill">Product Execution</span>
-              <span class="pill">Ops / Supply Chain</span>
-              <span class="pill">Analytics</span>
-              <span class="pill">Python</span>
-              <span class="pill">SQL</span>
-              <span class="pill">Dashboards</span>
-              <span class="pill">Stakeholder Mgmt</span>
-            </div>
-          </div>
+      <aside class="hero__side">
+        <div class="card lift">
+          <div class="k">Signal</div>
+          <div class="strong">Outcome > theater</div>
+          <div class="muted">Less fluff, more shipped work.</div>
+        </div>
 
-          <div class="latest-block">
-            <h3 class="k">Latest Publication / Talk.</h3>
-            <div class="item">
-              <div class="item-title">Nano-magnetite–enhanced phase-change microbeads</div>
-              <div class="item-sub">ICTSE 2026 — NIT Warangal</div>
-              <p class="item-desc">
-                Presented work on improving thermal energy storage performance using PCM microbeads enhanced with nano-magnetite.
-              </p>
-            </div>
-          </div>
-
-          <div class="latest-block">
-            <h3 class="k">Latest Leadership.</h3>
-            <div class="item">
-              <div class="item-title">BITS Hyderabad Consulting Group (BHCG)</div>
-              <div class="item-sub">Vice President (Consulting) — Former</div>
-              <div class="item-meta">Jun 2024 – May 2025</div>
-              <p class="item-desc">
-                Led consulting initiatives, delivery standards, and team execution across projects and competitions.
-              </p>
-            </div>
+        <div class="card lift">
+          <div class="k">Strengths</div>
+          <div class="chips">
+            <span class="chip">Product execution</span>
+            <span class="chip">Workflow design</span>
+            <span class="chip">Analytics</span>
+            <span class="chip">Reliability</span>
+            <span class="chip">Stakeholders</span>
           </div>
         </div>
-      </section>
 
-      <section class="section" id="experience">
+        <div class="card lift">
+          <div class="k">Quick</div>
+          <div class="quick">
+            <a class="q" href="#experience">Experience →</a>
+            <a class="q" href="#projects">Projects →</a>
+            <a class="q" href="#contact">Contact →</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section reveal" id="about">
+      <div class="section__head">
+        <h2>About</h2>
+        <p class="muted">Structured, readable, and not “wall of text.”</p>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>How I work</h3>
+          <ul class="list">
+            <li><b>Clarity first:</b> define the job-to-be-done, constraints, and success metrics.</li>
+            <li><b>Ship safely:</b> instrumentation, rollout guardrails, rollback paths.</li>
+            <li><b>Make it usable:</b> UI/UX for operators, not just engineers.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>What I optimize for</h3>
+          <div class="chips">
+            <span class="chip">Reliability</span>
+            <span class="chip">Throughput</span>
+            <span class="chip">Decision velocity</span>
+            <span class="chip">Low-maintenance systems</span>
+            <span class="chip">Clear ownership</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOW -->
+    <section class="section reveal" id="now">
+      <div class="section__head">
+        <h2>Now</h2>
+        <p class="muted">A snapshot panel (edit the content, UI stays).</p>
+      </div>
+
+      <div class="grid3">
+        <div class="card soft lift">
+          <div class="k">Focus</div>
+          <div class="strong">Ops tooling</div>
+          <div class="muted">Systems that reduce friction and fail gracefully.</div>
+        </div>
+
+        <div class="card soft lift">
+          <div class="k">Theme</div>
+          <div class="strong">Execution</div>
+          <div class="muted">Shipping > slides. Adoption > features.</div>
+        </div>
+
+        <div class="card soft lift">
+          <div class="k">Edge</div>
+          <div class="strong">Systems thinking</div>
+          <div class="muted">Constraints, incentives, and second-order effects.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section reveal" id="experience">
+      <div class="section__head">
         <h2>Experience</h2>
+        <p class="muted">Timeline cards with hierarchy + tags.</p>
+      </div>
 
-        <article class="entry">
-          <header class="entry-head">
+      <div class="stack">
+        <article class="card lift">
+          <div class="row">
             <div>
-              <h3>Licious</h3>
-              <div class="role">Product Management Intern (PS-2) — Ops / Supply Chain Tech</div>
+              <h3 class="no-m">Licious</h3>
+              <div class="muted">Product Management Intern (PS-2) — Ops / Supply Chain Tech</div>
             </div>
-            <div class="dates">2025</div>
-          </header>
-          <ul class="bullets">
-            <li>Owned internal tooling and process improvements spanning inventory movement and operational workflows.</li>
-            <li>Worked cross-functionally with ops stakeholders to convert requirements into shippable features and SOP-ready changes.</li>
-            <li>Delivered measurable operational impact and received a PPO.</li>
+            <div class="tiny right">2025</div>
+          </div>
+
+          <ul class="list">
+            <li>Owned internal tooling and workflow improvements spanning inventory movement and operational reliability.</li>
+            <li>Converted stakeholder requirements into shippable features with rollout-safe changes.</li>
+            <li>Delivered impact and received a PPO.</li>
           </ul>
-          <div class="tags">
-            <span class="tag">Product</span>
-            <span class="tag">Ops Tooling</span>
-            <span class="tag">Supply Chain</span>
-            <span class="tag">Analytics</span>
+
+          <div class="chips">
+            <span class="chip">Product</span>
+            <span class="chip">Ops</span>
+            <span class="chip">Supply Chain</span>
+            <span class="chip">Analytics</span>
           </div>
         </article>
 
-        <article class="entry">
-          <header class="entry-head">
+        <article class="card lift">
+          <div class="row">
             <div>
-              <h3>J.P. Morgan & Chase</h3>
-              <div class="role">Global Markets Analyst Intern — Strategic Indices (EMEA)</div>
+              <h3 class="no-m">J.P. Morgan & Chase</h3>
+              <div class="muted">Global Markets Analyst Intern — Strategic Indices (EMEA)</div>
             </div>
-            <div class="dates">Jul 2024 – Dec 2024</div>
-          </header>
-          <ul class="bullets">
-            <li>Supported index development and analytics, including backtesting, performance analysis, reconciliation, and maintenance.</li>
-            <li>Built and evaluated single- and multi-style factor indices tailored to client requirements using long-horizon backtests.</li>
-            <li>Improved stock-level return attribution across multiple factor dimensions.</li>
+            <div class="tiny right">Jul 2024 – Dec 2024</div>
+          </div>
+
+          <ul class="list">
+            <li>Supported index development: backtesting, performance analytics, reconciliation, and maintenance.</li>
+            <li>Developed factor index variants and produced long-horizon backtests for client-driven requirements.</li>
+            <li>Enhanced stock-level return attribution across multiple factor dimensions.</li>
           </ul>
-          <div class="tags">
-            <span class="tag">Indices</span>
-            <span class="tag">Backtesting</span>
-            <span class="tag">Performance</span>
-            <span class="tag">Factor Models</span>
+
+          <div class="chips">
+            <span class="chip">Indices</span>
+            <span class="chip">Backtesting</span>
+            <span class="chip">Performance</span>
+            <span class="chip">Factor Models</span>
           </div>
         </article>
-      </section>
+      </div>
+    </section>
 
-      <section class="section" id="leadership">
-        <h2>Leadership & Positions</h2>
-
-        <article class="entry">
-          <header class="entry-head">
-            <div>
-              <h3>BHCG</h3>
-              <div class="role">Vice President (Consulting) — Former</div>
-            </div>
-            <div class="dates">Jun 2024 – May 2025</div>
-          </header>
-          <ul class="bullets">
-            <li>Drove execution quality, communication standards, and delivery rigor across consulting workstreams.</li>
-            <li>Supported consulting competition pipelines and stakeholder coordination for club initiatives.</li>
-          </ul>
-        </article>
-
-        <article class="entry">
-          <header class="entry-head">
-            <div>
-              <h3>HPAIR</h3>
-              <div class="role">Delegate (Selected)</div>
-            </div>
-            <div class="dates">2025</div>
-          </header>
-          <ul class="bullets">
-            <li>Selected again as a delegate for HPAIR, engaging across policy/industry tracks and peer cohort discussions.</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="section" id="projects">
+    <!-- PROJECTS -->
+    <section class="section reveal" id="projects">
+      <div class="section__head">
         <h2>Projects</h2>
+        <p class="muted">Filterable cards (no blog, just projects).</p>
+      </div>
 
-        <div class="projects">
-          <a class="proj" href="https://aryan-rae.github.io/" target="_blank" rel="noreferrer">
-            <div class="proj-title">Personal Website</div>
-            <div class="proj-desc">Single-page portfolio focused on fast loading, clean structure, and readable typography.</div>
-            <div class="proj-foot">
-              <span class="mini">Live</span>
-              <span class="arrow">→</span>
-            </div>
-          </a>
+      <div class="filters" role="tablist" aria-label="Project filters">
+        <button class="seg on" data-filter="all" type="button">All</button>
+        <button class="seg" data-filter="product" type="button">Product</button>
+        <button class="seg" data-filter="ops" type="button">Ops</button>
+        <button class="seg" data-filter="ml" type="button">ML</button>
+        <button class="seg" data-filter="research" type="button">Research</button>
+      </div>
 
-          <a class="proj" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer">
-            <div class="proj-title">Ops / Analytics Tooling</div>
-            <div class="proj-desc">Practical tools and analysis work spanning workflow friction reduction and operational decision support.</div>
-            <div class="proj-foot">
-              <span class="mini">GitHub</span>
-              <span class="arrow">→</span>
-            </div>
-          </a>
+      <div class="grid3" id="projGrid">
+        <a class="card proj lift" data-tags="product ops" href="#" target="_blank" rel="noreferrer">
+          <div class="k">Product • Ops</div>
+          <div class="strong">Inventory Movement Tool</div>
+          <div class="muted">Internal workflow tool that reduces operator friction and increases throughput.</div>
+          <div class="tags">
+            <span class="tag">tooling</span><span class="tag">workflow</span><span class="tag">ux</span>
+          </div>
+          <div class="go">Open →</div>
+        </a>
 
-          <a class="proj" href="https://www.linkedin.com/in/aryanrae/" target="_blank" rel="noreferrer">
-            <div class="proj-title">Research & Writing</div>
-            <div class="proj-desc">Thermal energy storage work and related research communication, including conference presentation.</div>
-            <div class="proj-foot">
-              <span class="mini">Profile</span>
-              <span class="arrow">→</span>
-            </div>
-          </a>
+        <a class="card proj lift" data-tags="ml" href="#" target="_blank" rel="noreferrer">
+          <div class="k">ML</div>
+          <div class="strong">Route / Allocation Optimizer</div>
+          <div class="muted">Optimization model for constrained allocation; prioritizes operational feasibility.</div>
+          <div class="tags">
+            <span class="tag">optimization</span><span class="tag">constraints</span>
+          </div>
+          <div class="go">Open →</div>
+        </a>
 
-          <a class="proj" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer">
-            <div class="proj-title">Case / Consulting Work</div>
-            <div class="proj-desc">Structured problem-solving outputs across strategy/ops cases and competition settings.</div>
-            <div class="proj-foot">
-              <span class="mini">GitHub</span>
-              <span class="arrow">→</span>
-            </div>
-          </a>
-        </div>
-      </section>
+        <a class="card proj lift" data-tags="research" href="#" target="_blank" rel="noreferrer">
+          <div class="k">Research</div>
+          <div class="strong">Thermal Energy Storage (PCM)</div>
+          <div class="muted">Experimental + communication work on PCM performance and material behavior.</div>
+          <div class="tags">
+            <span class="tag">materials</span><span class="tag">thermal</span>
+          </div>
+          <div class="go">Open →</div>
+        </a>
 
-      <section class="section" id="contact">
+        <a class="card proj lift" data-tags="product" href="#" target="_blank" rel="noreferrer">
+          <div class="k">Product</div>
+          <div class="strong">Dashboard Suite</div>
+          <div class="muted">Decision dashboards with clear definitions and resilient data contracts.</div>
+          <div class="tags">
+            <span class="tag">metrics</span><span class="tag">analytics</span>
+          </div>
+          <div class="go">Open →</div>
+        </a>
+
+        <a class="card proj lift" data-tags="ops" href="#" target="_blank" rel="noreferrer">
+          <div class="k">Ops</div>
+          <div class="strong">Rollout Playbook</div>
+          <div class="muted">Pilots, guardrails, monitoring, rollback paths — pragmatic rollout system.</div>
+          <div class="tags">
+            <span class="tag">rollout</span><span class="tag">reliability</span>
+          </div>
+          <div class="go">Open →</div>
+        </a>
+
+        <a class="card proj lift" data-tags="research ml" href="#" target="_blank" rel="noreferrer">
+          <div class="k">Research • ML</div>
+          <div class="strong">Modeling Notes</div>
+          <div class="muted">Readable notes: assumptions, evaluation, baselines, and failure modes.</div>
+          <div class="tags">
+            <span class="tag">notes</span><span class="tag">evaluation</span>
+          </div>
+          <div class="go">Open →</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section reveal" id="contact">
+      <div class="section__head">
         <h2>Contact</h2>
-        <div class="contact">
-          <a class="link" href="mailto:aryan.rae@outlook.com">aryan.rae@outlook.com</a>
-          <span class="dot">·</span>
-          <a class="link" href="https://www.linkedin.com/in/aryanrae/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <span class="dot">·</span>
-          <a class="link" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer">GitHub</a>
-        </div>
-      </section>
+        <p class="muted">Minimal, strong CTAs.</p>
+      </div>
 
-      <footer class="footer">
-        © <span id="year"></span> Aryan Rae.
-      </footer>
-    </main>
-  </div>
+      <div class="grid2">
+        <div class="card">
+          <h3>Direct</h3>
+          <div class="cta">
+            <a class="btn" href="mailto:you@example.com"><span>Email</span><span class="arrow">→</span></a>
+            <a class="btn ghost" href="https://www.linkedin.com/in/aryanrae/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="btn ghost" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <p class="muted" style="margin:12px 0 0;">
+            Replace <code>you@example.com</code> with your email. Everything else is wired.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>What to send</h3>
+          <ul class="list">
+            <li>Who you are + context</li>
+            <li>What you want + timeline</li>
+            <li>Any constraints (location, role, etc.)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <span class="muted">© <span id="year"></span> Aryan Rae</span>
+        <span class="muted">Single-page • Fast • No frameworks</span>
+      </div>
+    </footer>
+  </main>
 
   <script src="./script.js"></script>
 </body>
