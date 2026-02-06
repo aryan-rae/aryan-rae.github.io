@@ -478,8 +478,3 @@ b{ font-weight: 800; }
   .grid2{ grid-template-columns: 1fr; }
   .section__head{ flex-direction: column; align-items:flex-start; }
 }
-
-@media (max-width: 980px){
-  .nav{ display:flex; }
-  .nav a{ display:none; } /* handled via burger + drawer on small screens */
-}
