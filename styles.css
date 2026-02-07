@@ -255,7 +255,7 @@ body{
 }
 .h1{
   margin: 0 0 10px;
-  font-size: clamp(52px, 7vw, 92px);
+ font-size: clamp(44px, 5.6vw, 80px);
   line-height: 1.02;
   letter-spacing: -.04em;
 }
