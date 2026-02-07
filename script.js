@@ -1,82 +1,142 @@
 (() => {
-  // year
-  const y = document.getElementById("year");
-  if (y) y.textContent = String(new Date().getFullYear());
+  const $ = (q, root=document) => root.querySelector(q);
+  const $$ = (q, root=document) => Array.from(root.querySelectorAll(q));
 
-  // scroll progress
-  const fill = document.getElementById("pfill");
+  // Year
+  const yearEl = $("#year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Scroll progress
+  const pfill = $("#pfill");
   const onScroll = () => {
-    const st = window.scrollY || document.documentElement.scrollTop || 0;
-    const dh = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = dh > 0 ? (st / dh) * 100 : 0;
-    if (fill) fill.style.width = pct.toFixed(2) + "%";
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
+    if (pfill) pfill.style.width = `${pct}%`;
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // theme toggle (persist)
-  const root = document.documentElement;
-  const key = "theme";
-  const saved = localStorage.getItem(key);
-  if (saved === "light" || saved === "dark") root.dataset.theme = saved;
+  // Reveal on view
+  const revealEls = $$(".reveal");
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) e.target.classList.add("on");
+    }
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
 
-  const themeBtn = document.getElementById("themeBtn");
-  const toggleTheme = () => {
-    const cur = root.dataset.theme === "light" ? "light" : "dark";
-    const next = cur === "light" ? "dark" : "light";
-    root.dataset.theme = next;
-    localStorage.setItem(key, next);
-  };
-  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
-
-  // mobile drawer
-  const burger = document.getElementById("burger");
-  const drawer = document.getElementById("drawer");
-  const closeDrawer = () => {
-    if (!drawer || !burger) return;
-    drawer.classList.remove("open");
-    drawer.setAttribute("aria-hidden", "true");
-    burger.setAttribute("aria-expanded", "false");
+  // Mobile drawer
+  const burger = $("#burger");
+  const drawer = $("#drawer");
+  const setDrawer = (open) => {
+    if (!burger || !drawer) return;
+    burger.setAttribute("aria-expanded", String(open));
+    drawer.setAttribute("aria-hidden", String(!open));
+    drawer.classList.toggle("open", open);
   };
 
   if (burger && drawer) {
+    setDrawer(false);
+
     burger.addEventListener("click", () => {
-      const open = drawer.classList.toggle("open");
-      drawer.setAttribute("aria-hidden", open ? "false" : "true");
-      burger.setAttribute("aria-expanded", open ? "true" : "false");
+      const open = burger.getAttribute("aria-expanded") !== "true";
+      setDrawer(open);
     });
-    drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
-    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+
+    $$("#drawer a").forEach(a => {
+      a.addEventListener("click", () => setDrawer(false));
+    });
+
+    document.addEventListener("click", (e) => {
+      const open = burger.getAttribute("aria-expanded") === "true";
+      if (!open) return;
+      if (drawer.contains(e.target) || burger.contains(e.target)) return;
+      setDrawer(false);
+    });
   }
 
-  // reveal
-  const items = Array.from(document.querySelectorAll(".reveal"));
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) e.target.classList.add("on");
-  }, { threshold: 0.12 });
-  items.forEach(el => io.observe(el));
+  // Theme toggle (kept as-is: dark)
+  const themeBtn = $("#themeBtn");
+  const root = document.documentElement;
 
-  // projects filter
-  const grid = document.getElementById("projGrid");
-  if (grid) {
-    const btns = Array.from(document.querySelectorAll(".seg[data-filter]"));
-    const cards = Array.from(grid.querySelectorAll(".proj"));
+  const applyTheme = (t) => {
+    root.setAttribute("data-theme", t);
+    localStorage.setItem("theme", t);
+  };
 
-    const setOn = (btn) => btns.forEach(b => b.classList.toggle("on", b === btn));
-    const apply = (filter) => {
-      cards.forEach(card => {
-        const tags = (card.getAttribute("data-tags") || "").split(/\s+/).filter(Boolean);
-        const show = filter === "all" ? true : tags.includes(filter);
-        card.style.display = show ? "" : "none";
-      });
-    };
+  const saved = localStorage.getItem("theme");
+  if (saved) applyTheme(saved);
 
-    btns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        setOn(btn);
-        apply(btn.getAttribute("data-filter"));
-      });
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+      const cur = root.getAttribute("data-theme") || "dark";
+      applyTheme(cur); // stays dark
     });
-    apply("all");
   }
+
+  // Project filter
+  const segs = $$(".seg");
+  const filterProjects = (tag) => {
+    const cards = $$("#projGrid .proj");
+    segs.forEach(b => b.classList.toggle("on", b.dataset.filter === tag));
+
+    cards.forEach(card => {
+      const tags = (card.getAttribute("data-tags") || "").split(/\s+/).join(" ");
+      const ok = tag === "all" || tags.includes(tag);
+      card.style.display = ok ? "" : "none";
+    });
+  };
+  segs.forEach(btn => {
+    btn.addEventListener("click", () => filterProjects(btn.dataset.filter || "all"));
+  });
+
+  // Clipboard copy (email)
+  const toast = $("#toast");
+  let toastTimer = null;
+
+  const showToast = (msg="Copied!") => {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 1100);
+  };
+
+  const copyText = async (text) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (_) {}
+
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (_) {
+      return false;
+    }
+  };
+
+  const attachCopy = (el) => {
+    if (!el) return;
+    el.addEventListener("click", async () => {
+      const email = el.dataset.email;
+      if (!email) return;
+      const ok = await copyText(email);
+      showToast(ok ? "Copied!" : "Copy failed");
+    });
+  };
+
+  attachCopy($("#copyEmailBtn"));
+  attachCopy($("#copyEmailText"));
 })();
