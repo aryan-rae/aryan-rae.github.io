@@ -1,142 +1,125 @@
-(() => {
-  const $ = (q, root=document) => root.querySelector(q);
-  const $$ = (q, root=document) => Array.from(root.querySelectorAll(q));
+// helpers
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
 
-  // Year
-  const yearEl = $("#year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+// scroll progress
+(function scrollProgress(){
+  const fill = $("#pfill");
+  if (!fill) return;
 
-  // Scroll progress
-  const pfill = $("#pfill");
   const onScroll = () => {
     const doc = document.documentElement;
     const max = doc.scrollHeight - doc.clientHeight;
-    const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
-    if (pfill) pfill.style.width = `${pct}%`;
+    const p = max > 0 ? (doc.scrollTop / max) * 100 : 0;
+    fill.style.width = `${p.toFixed(2)}%`;
   };
-  window.addEventListener("scroll", onScroll, { passive: true });
+
+  window.addEventListener("scroll", onScroll, { passive:true });
   onScroll();
+})();
 
-  // Reveal on view
-  const revealEls = $$(".reveal");
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (e.isIntersecting) e.target.classList.add("on");
-    }
-  }, { threshold: 0.15 });
-  revealEls.forEach(el => io.observe(el));
+// year
+(function footerYear(){
+  const y = $("#year");
+  if (y) y.textContent = new Date().getFullYear();
+})();
 
-  // Mobile drawer
+// mobile drawer
+(function drawer(){
   const burger = $("#burger");
   const drawer = $("#drawer");
-  const setDrawer = (open) => {
-    if (!burger || !drawer) return;
-    burger.setAttribute("aria-expanded", String(open));
-    drawer.setAttribute("aria-hidden", String(!open));
-    drawer.classList.toggle("open", open);
+  if (!burger || !drawer) return;
+
+  const close = () => {
+    burger.setAttribute("aria-expanded", "false");
+    drawer.setAttribute("aria-hidden", "true");
+    drawer.classList.remove("open");
   };
 
-  if (burger && drawer) {
-    setDrawer(false);
-
-    burger.addEventListener("click", () => {
-      const open = burger.getAttribute("aria-expanded") !== "true";
-      setDrawer(open);
-    });
-
-    $$("#drawer a").forEach(a => {
-      a.addEventListener("click", () => setDrawer(false));
-    });
-
-    document.addEventListener("click", (e) => {
-      const open = burger.getAttribute("aria-expanded") === "true";
-      if (!open) return;
-      if (drawer.contains(e.target) || burger.contains(e.target)) return;
-      setDrawer(false);
-    });
-  }
-
-  // Theme toggle (kept as-is: dark)
-  const themeBtn = $("#themeBtn");
-  const root = document.documentElement;
-
-  const applyTheme = (t) => {
-    root.setAttribute("data-theme", t);
-    localStorage.setItem("theme", t);
-  };
-
-  const saved = localStorage.getItem("theme");
-  if (saved) applyTheme(saved);
-
-  if (themeBtn) {
-    themeBtn.addEventListener("click", () => {
-      const cur = root.getAttribute("data-theme") || "dark";
-      applyTheme(cur); // stays dark
-    });
-  }
-
-  // Project filter
-  const segs = $$(".seg");
-  const filterProjects = (tag) => {
-    const cards = $$("#projGrid .proj");
-    segs.forEach(b => b.classList.toggle("on", b.dataset.filter === tag));
-
-    cards.forEach(card => {
-      const tags = (card.getAttribute("data-tags") || "").split(/\s+/).join(" ");
-      const ok = tag === "all" || tags.includes(tag);
-      card.style.display = ok ? "" : "none";
-    });
-  };
-  segs.forEach(btn => {
-    btn.addEventListener("click", () => filterProjects(btn.dataset.filter || "all"));
+  burger.addEventListener("click", () => {
+    const open = burger.getAttribute("aria-expanded") === "true";
+    burger.setAttribute("aria-expanded", String(!open));
+    drawer.setAttribute("aria-hidden", String(open));
+    drawer.classList.toggle("open", !open);
   });
 
-  // Clipboard copy (email)
-  const toast = $("#toast");
-  let toastTimer = null;
+  drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", close));
+})();
 
-  const showToast = (msg="Copied!") => {
-    if (!toast) return;
-    toast.textContent = msg;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 1100);
+// reveal on scroll
+(function reveal(){
+  const els = $$(".reveal");
+  if (!els.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add("in");
+    });
+  }, { threshold: 0.12 });
+
+  els.forEach(el => io.observe(el));
+})();
+
+// projects filter
+(function projectFilter(){
+  const grid = $("#projGrid");
+  if (!grid) return;
+
+  const btns = $$(".seg");
+  const cards = [...grid.querySelectorAll(".proj")];
+
+  const apply = (tag) => {
+    cards.forEach(c => {
+      const tags = (c.getAttribute("data-tags") || "").toLowerCase();
+      const show = tag === "all" ? true : tags.includes(tag);
+      c.style.display = show ? "" : "none";
+    });
   };
 
-  const copyText = async (text) => {
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-        return true;
-      }
-    } catch (_) {}
+  btns.forEach(b => b.addEventListener("click", () => {
+    btns.forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    apply(b.dataset.filter || "all");
+  }));
+})();
 
+// copy email (ONLY one place now: email tile)
+(function copyEmail(){
+  const btn = $("#copyEmailBtn");
+  const toast = $("#toast");
+  if (!btn || !toast) return;
+
+  let t = null;
+
+  const show = (msg) => {
+    toast.textContent = msg;
+    toast.classList.add("on");
+    clearTimeout(t);
+    t = setTimeout(() => toast.classList.remove("on"), 1200);
+  };
+
+  const copyText = async (txt) => {
     try {
+      await navigator.clipboard.writeText(txt);
+      return true;
+    } catch {
+      // fallback
       const ta = document.createElement("textarea");
-      ta.value = text;
+      ta.value = txt;
       ta.setAttribute("readonly", "");
       ta.style.position = "fixed";
-      ta.style.left = "-9999px";
+      ta.style.opacity = "0";
       document.body.appendChild(ta);
       ta.select();
       const ok = document.execCommand("copy");
       document.body.removeChild(ta);
       return ok;
-    } catch (_) {
-      return false;
     }
   };
 
-  const attachCopy = (el) => {
-    if (!el) return;
-    el.addEventListener("click", async () => {
-      const email = el.dataset.email;
-      if (!email) return;
-      const ok = await copyText(email);
-      showToast(ok ? "Copied!" : "Copy failed");
-    });
-  };
-
-  attachCopy($("#copyEmailBtn"));
-  attachCopy($("#copyEmailText"));
+  btn.addEventListener("click", async () => {
+    const email = btn.getAttribute("data-copy") || "raearyan@gmail.com";
+    const ok = await copyText(email);
+    show(ok ? "Copied!" : "Copy failed");
+  });
 })();
