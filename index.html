@@ -11,8 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="./styles.css" />
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="./favicon.svg">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
 </head>
 
 <body>
@@ -29,7 +28,7 @@
   <div class="progress" aria-hidden="true"><span id="pfill"></span></div>
 
   <!-- top bar -->
-  <header class="top">
+  <header class="top" id="topbar">
     <div class="top__inner">
       <a class="brand" href="#top" aria-label="Home">
         <span class="brand__mark">A</span>
@@ -46,14 +45,16 @@
 
       <div class="actions">
         <button class="iconbtn" id="themeBtn" type="button" aria-label="Toggle theme">
-          <span class="dot"></span>
+          <span class="dot" aria-hidden="true"></span>
         </button>
+
         <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
 
+    <!-- MOBILE DRAWER (hidden by default; opens only when JS adds .open) -->
     <div class="drawer" id="drawer" aria-hidden="true">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
@@ -65,30 +66,29 @@
 
   <main class="wrap" id="top">
     <!-- HERO -->
-    <section class="hero reveal">
-      <div class="hero__main">
+    <section class="hero">
+      <div class="hero__main card heroCard">
         <h1 class="h1">Hello, I’m Aryan!</h1>
       </div>
     </section>
 
     <!-- ABOUT -->
-    <section class="section reveal" id="about">
+    <section class="section" id="about">
       <div class="section__head">
         <h2>About</h2>
       </div>
 
-      <div class="card">
-        <p class="bodycopy">
-          Incoming Associate Product Manager (APM) at Licious and a fourth-year student at BITS Pilani.
-          I like working at the intersection of technology, product, and finance—where good systems, sharp decision-making,
-          and measurable outcomes matter. I enjoy taking ambiguous problems, breaking them down into crisp requirements,
-          and shipping solutions that are simple to use but robust in practice.
-        </p>
+      <div class="stack">
+        <div class="card">
+          <p class="aboutText">
+            Incoming Associate Product Manager (APM) at Licious and a fourth-year student at BITS Pilani. I like working at the intersection of technology, product, and finance—where good systems, sharp decision-making, and measurable outcomes matter. I enjoy taking ambiguous problems, breaking them down into crisp requirements, and shipping solutions that are simple to use but robust in practice.
+          </p>
+        </div>
       </div>
     </section>
 
     <!-- EXPERIENCE -->
-    <section class="section reveal" id="experience">
+    <section class="section" id="experience">
       <div class="section__head">
         <h2>Experience</h2>
       </div>
@@ -103,7 +103,7 @@
             <div class="tiny right">June 2026</div>
           </div>
 
-          <ul class="list bigbullets">
+          <ul class="list">
             <li>Owned internal tooling that reduced operator friction and made inventory actions harder to mess up.</li>
             <li>Converted ambiguous stakeholder asks into scoped releases with guardrails and clear success metrics.</li>
             <li>Worked across ops + engineering to land adoption (not just “feature shipped”).</li>
@@ -113,7 +113,7 @@
     </section>
 
     <!-- EDUCATION -->
-    <section class="section reveal" id="education">
+    <section class="section" id="education">
       <div class="section__head">
         <h2>Education</h2>
       </div>
@@ -127,7 +127,8 @@
             </div>
             <div class="tiny right">Class of 2026</div>
           </div>
-          <ul class="list bigbullets">
+
+          <ul class="list">
             <li>CGPA 7.5/10</li>
             <li>Vice President, Consulting Club (BHCG)</li>
           </ul>
@@ -141,7 +142,8 @@
             </div>
             <div class="tiny right">Class of 2022</div>
           </div>
-          <ul class="list bigbullets">
+
+          <ul class="list">
             <li>Grade 92.4%</li>
             <li>Elective subject: Economics</li>
           </ul>
@@ -150,7 +152,7 @@
     </section>
 
     <!-- PROJECTS -->
-    <section class="section reveal" id="projects">
+    <section class="section" id="projects">
       <div class="section__head">
         <h2>Projects</h2>
       </div>
@@ -227,58 +229,73 @@
     </section>
 
     <!-- CONTACT -->
-    <section class="section reveal" id="contact">
+    <section class="section" id="contact">
       <div class="section__head">
         <h2>Contact</h2>
       </div>
 
-      <div class="card lift contactcard">
-        <div class="contactgrid">
-          <a class="contacttile" href="https://www.linkedin.com/in/aryanrae" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-            <span class="tileico" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M6.94 9.06H3.75V20.25h3.19V9.06ZM5.35 3.75a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8ZM20.25 20.25h-3.19v-5.6c0-1.34-.03-3.07-1.88-3.07-1.88 0-2.16 1.46-2.16 2.97v5.7H9.84V9.06h3.06v1.53h.04c.43-.8 1.48-1.65 3.05-1.65 3.26 0 3.86 2.15 3.86 4.95v6.36Z"
-                      fill="currentColor"/>
-              </svg>
-            </span>
-            <span class="tilelabel">LinkedIn</span>
-          </a>
+      <div class="stack">
+        <div class="card">
+          <div class="contact-icons" aria-label="Contact links">
+            <a class="ctile" href="https://www.linkedin.com/in/aryanrae" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <span class="ico" aria-hidden="true">
+                <!-- LinkedIn -->
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M6.5 9.5V18.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M6.5 6.5H6.51" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M10.5 18.5V12.5C10.5 10.843 11.843 9.5 13.5 9.5C15.157 9.5 16.5 10.843 16.5 12.5V18.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M10.5 12.5V9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <div class="lbl">LinkedIn</div>
+            </a>
 
-          <a class="contacttile" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer" aria-label="GitHub">
-            <span class="tileico" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path fill="currentColor" d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-1.9c-3.13.68-3.79-1.34-3.79-1.34-.52-1.32-1.26-1.67-1.26-1.67-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.5-.28-5.12-1.25-5.12-5.56 0-1.23.44-2.24 1.17-3.02-.12-.29-.51-1.44.11-3 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 5.66 0c2.16-1.45 3.11-1.15 3.11-1.15.62 1.56.23 2.71.11 3 .73.78 1.17 1.79 1.17 3.02 0 4.32-2.62 5.28-5.13 5.56.41.35.77 1.04.77 2.1v3.11c0 .3.21.65.78.54A11.25 11.25 0 0 0 12 .75Z"/>
-              </svg>
-            </span>
-            <span class="tilelabel">GitHub</span>
-          </a>
+            <a class="ctile" href="https://github.com/aryan-rae" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <span class="ico" aria-hidden="true">
+                <!-- GitHub -->
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 19c-4 1.5-4-2-5-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M15 19v-3.5c0-1 .3-1.7.8-2.2 2.7-.3 5.2-1.3 5.2-6A4.7 4.7 0 0 0 19.8 4C19.9 3.7 20.3 2.3 19.7 1c0 0-1 .3-3.2 1.8A11 11 0 0 0 12 2.5c-1.5 0-2.9.2-4.2.8C5.6 1.3 4.6 1 4.6 1 4 2.3 4.4 3.7 4.5 4A4.7 4.7 0 0 0 3 7.3c0 4.7 2.5 5.7 5.2 6 .3.3.6.8.7 1.6V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div class="lbl">GitHub</div>
+            </a>
 
-          <a class="contacttile" href="./AryanRae_Resume.pdf" target="_blank" rel="noreferrer" aria-label="Resume">
-            <span class="tileico" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M7 3.75h7l3 3v13.5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5.75a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                <path d="M14 3.75v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                <path d="M8.5 11h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M8.5 14.5h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M8.5 18h4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </span>
-            <span class="tilelabel">Resume</span>
-          </a>
+            <a class="ctile" href="./AryanRae_Resume.pdf" target="_blank" rel="noreferrer" aria-label="Resume">
+              <span class="ico" aria-hidden="true">
+                <!-- Resume / paper -->
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7l-5-5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M14 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M8 12h8M8 16h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <div class="lbl">Resume</div>
+            </a>
 
-          <button class="contacttile" id="copyEmailBtn" type="button" data-copy="raearyan@gmail.com" aria-label="Copy email">
-            <span class="tileico" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M4.5 7.25A2.5 2.5 0 0 1 7 4.75h10A2.5 2.5 0 0 1 19.5 7.25v9.5A2.5 2.5 0 0 1 17 19.25H7a2.5 2.5 0 0 1-2.5-2.5v-9.5Z" stroke="currentColor" stroke-width="1.8" />
-                <path d="M6.5 7.5 12 11.75 17.5 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="tilelabel">raearyan@gmail.com</span>
-            <span class="tilesub">Click to copy</span>
-          </button>
+            <button class="ctile" id="copyEmailBtn" type="button" aria-label="Copy email">
+              <span class="ico" aria-hidden="true">
+                <!-- Email -->
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <div class="lbl">Email</div>
+              <div class="sub" id="emailSub">Click to copy</div>
+            </button>
+          </div>
+
+          <!-- single email line (ONLY ONCE) -->
+          <div class="emailRow">
+            <span class="emailLabel">Email:</span>
+            <button class="emailPill" id="copyEmailPill" type="button" aria-label="Copy email address">
+              raearyan@gmail.com <span class="emailHint">(click to copy)</span>
+            </button>
+          </div>
+
+          <div id="toast" class="toast" role="status" aria-live="polite">Copied!</div>
         </div>
-
-        <div class="toast" id="toast" aria-live="polite" role="status"></div>
       </div>
     </section>
 
@@ -289,6 +306,6 @@
     </footer>
   </main>
 
-  <script src="./script.js"></script>
+  <script src="./script.js" defer></script>
 </body>
 </html>
