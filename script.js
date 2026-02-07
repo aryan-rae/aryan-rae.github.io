@@ -2,6 +2,34 @@
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => document.querySelectorAll(s);
 
+// THEME (dark/light) — working toggle + localStorage + respects OS on first load
+(function themeToggle(){
+  const root = document.documentElement;
+  const btn = $("#themeBtn");
+  if (!btn) return;
+
+  const KEY = "aryan_theme";
+
+  const prefersLight = () =>
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+
+  const apply = (t) => {
+    root.setAttribute("data-theme", t);
+    btn.setAttribute("aria-pressed", String(t === "light"));
+  };
+
+  const saved = localStorage.getItem(KEY);
+  if (saved === "light" || saved === "dark") apply(saved);
+  else apply(prefersLight() ? "light" : "dark");
+
+  btn.addEventListener("click", () => {
+    const cur = root.getAttribute("data-theme") || "dark";
+    const next = cur === "dark" ? "light" : "dark";
+    apply(next);
+    localStorage.setItem(KEY, next);
+  });
+})();
+
 // scroll progress
 (function scrollProgress(){
   const fill = $("#pfill");
@@ -83,7 +111,7 @@ const $$ = (s) => document.querySelectorAll(s);
   }));
 })();
 
-// copy email (ONLY one place now: email tile)
+// copy email (tile)
 (function copyEmail(){
   const btn = $("#copyEmailBtn");
   const toast = $("#toast");
@@ -103,7 +131,6 @@ const $$ = (s) => document.querySelectorAll(s);
       await navigator.clipboard.writeText(txt);
       return true;
     } catch {
-      // fallback
       const ta = document.createElement("textarea");
       ta.value = txt;
       ta.setAttribute("readonly", "");
