@@ -1,152 +1,141 @@
-// helpers
-const $ = (s) => document.querySelector(s);
-const $$ = (s) => document.querySelectorAll(s);
-
-// THEME (dark/light) — working toggle + localStorage + respects OS on first load
-(function themeToggle(){
+(() => {
   const root = document.documentElement;
-  const btn = $("#themeBtn");
-  if (!btn) return;
 
-  const KEY = "aryan_theme";
+  // ===== Year =====
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  const prefersLight = () =>
-    window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
-
-  const apply = (t) => {
-    root.setAttribute("data-theme", t);
-    btn.setAttribute("aria-pressed", String(t === "light"));
-  };
-
-  const saved = localStorage.getItem(KEY);
-  if (saved === "light" || saved === "dark") apply(saved);
-  else apply(prefersLight() ? "light" : "dark");
-
-  btn.addEventListener("click", () => {
-    const cur = root.getAttribute("data-theme") || "dark";
-    const next = cur === "dark" ? "light" : "dark";
-    apply(next);
-    localStorage.setItem(KEY, next);
-  });
-})();
-
-// scroll progress
-(function scrollProgress(){
-  const fill = $("#pfill");
-  if (!fill) return;
-
+  // ===== Scroll progress =====
+  const pfill = document.getElementById("pfill");
   const onScroll = () => {
+    if (!pfill) return;
     const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    const p = max > 0 ? (doc.scrollTop / max) * 100 : 0;
-    fill.style.width = `${p.toFixed(2)}%`;
+    const top = doc.scrollTop || document.body.scrollTop;
+    const h = (doc.scrollHeight - doc.clientHeight) || 1;
+    pfill.style.width = Math.min(100, Math.max(0, (top / h) * 100)) + "%";
   };
-
-  window.addEventListener("scroll", onScroll, { passive:true });
+  window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-})();
 
-// year
-(function footerYear(){
-  const y = $("#year");
-  if (y) y.textContent = new Date().getFullYear();
-})();
+  // ===== Theme toggle (dark/light) =====
+  const themeBtn = document.getElementById("themeBtn");
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark" || saved === "light") root.setAttribute("data-theme", saved);
 
-// mobile drawer
-(function drawer(){
-  const burger = $("#burger");
-  const drawer = $("#drawer");
-  if (!burger || !drawer) return;
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+      const cur = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+      const next = cur === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    });
+  }
 
-  const close = () => {
+  // ===== Mobile drawer toggle (FIXED) =====
+  const burger = document.getElementById("burger");
+  const drawer = document.getElementById("drawer");
+
+  const closeDrawer = () => {
+    if (!burger || !drawer) return;
     burger.setAttribute("aria-expanded", "false");
     drawer.setAttribute("aria-hidden", "true");
     drawer.classList.remove("open");
   };
 
-  burger.addEventListener("click", () => {
-    const open = burger.getAttribute("aria-expanded") === "true";
-    burger.setAttribute("aria-expanded", String(!open));
-    drawer.setAttribute("aria-hidden", String(open));
-    drawer.classList.toggle("open", !open);
-  });
-
-  drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", close));
-})();
-
-// reveal on scroll
-(function reveal(){
-  const els = $$(".reveal");
-  if (!els.length) return;
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add("in");
-    });
-  }, { threshold: 0.12 });
-
-  els.forEach(el => io.observe(el));
-})();
-
-// projects filter
-(function projectFilter(){
-  const grid = $("#projGrid");
-  if (!grid) return;
-
-  const btns = $$(".seg");
-  const cards = [...grid.querySelectorAll(".proj")];
-
-  const apply = (tag) => {
-    cards.forEach(c => {
-      const tags = (c.getAttribute("data-tags") || "").toLowerCase();
-      const show = tag === "all" ? true : tags.includes(tag);
-      c.style.display = show ? "" : "none";
-    });
+  const openDrawer = () => {
+    if (!burger || !drawer) return;
+    burger.setAttribute("aria-expanded", "true");
+    drawer.setAttribute("aria-hidden", "false");
+    drawer.classList.add("open");
   };
 
-  btns.forEach(b => b.addEventListener("click", () => {
-    btns.forEach(x => x.classList.remove("on"));
-    b.classList.add("on");
-    apply(b.dataset.filter || "all");
-  }));
-})();
+  if (burger && drawer) {
+    // ensure starts closed (prevents "always open" on phone)
+    closeDrawer();
 
-// copy email (tile)
-(function copyEmail(){
-  const btn = $("#copyEmailBtn");
-  const toast = $("#toast");
-  if (!btn || !toast) return;
+    burger.addEventListener("click", (e) => {
+      e.preventDefault();
+      const isOpen = burger.getAttribute("aria-expanded") === "true";
+      isOpen ? closeDrawer() : openDrawer();
+    });
 
-  let t = null;
+    // close when clicking a drawer link
+    drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
 
-  const show = (msg) => {
-    toast.textContent = msg;
-    toast.classList.add("on");
-    clearTimeout(t);
-    t = setTimeout(() => toast.classList.remove("on"), 1200);
+    // close on escape
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+
+    // close if tapping outside
+    document.addEventListener("click", (e) => {
+      if (!drawer.classList.contains("open")) return;
+      if (drawer.contains(e.target) || burger.contains(e.target)) return;
+      closeDrawer();
+    });
+
+    // close if resizing to desktop width
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 860) closeDrawer();
+    });
+  }
+
+  // ===== Project filter =====
+  const grid = document.getElementById("projGrid");
+  const segs = document.querySelectorAll(".filters .seg");
+  if (grid && segs.length) {
+    const cards = Array.from(grid.querySelectorAll("[data-tags]"));
+    const apply = (key) => {
+      cards.forEach((c) => {
+        const tags = (c.getAttribute("data-tags") || "").split(/\s+/);
+        const show = (key === "all") || tags.includes(key);
+        c.style.display = show ? "" : "none";
+      });
+    };
+
+    segs.forEach((btn) => btn.addEventListener("click", () => {
+      segs.forEach((b) => b.classList.remove("on"));
+      btn.classList.add("on");
+      apply(btn.dataset.filter || "all");
+    }));
+
+    apply("all");
+  }
+
+  // ===== Copy email (tile + pill) =====
+  const email = "raearyan@gmail.com";
+  const toast = document.getElementById("toast");
+  const emailSub = document.getElementById("emailSub");
+  const copyEmailBtn = document.getElementById("copyEmailBtn");
+  const copyEmailPill = document.getElementById("copyEmailPill");
+
+  const showToast = () => {
+    if (!toast) return;
+    toast.style.display = "block";
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => { toast.style.display = "none"; }, 1100);
   };
 
-  const copyText = async (txt) => {
+  const doCopy = async () => {
     try {
-      await navigator.clipboard.writeText(txt);
-      return true;
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = txt;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand("copy");
-      document.body.removeChild(ta);
-      return ok;
-    }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = email;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      if (emailSub) {
+        emailSub.textContent = "Copied!";
+        setTimeout(() => { emailSub.textContent = "Click to copy"; }, 1100);
+      }
+      showToast();
+    } catch (_) {}
   };
 
-  btn.addEventListener("click", async () => {
-    const email = btn.getAttribute("data-copy") || "raearyan@gmail.com";
-    const ok = await copyText(email);
-    show(ok ? "Copied!" : "Copy failed");
-  });
+  if (copyEmailBtn) copyEmailBtn.addEventListener("click", doCopy);
+  if (copyEmailPill) copyEmailPill.addEventListener("click", doCopy);
 })();
