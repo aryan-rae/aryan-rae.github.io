@@ -356,7 +356,7 @@ html[data-theme="light"] .grid{ opacity:.08; }
 .h1{
   margin: 0;
   font-weight: 800;
-  font-size: clamp(44px, 5vw, 66px);  /* not too huge */
+  font-size: clamp(38px, 6vw, 66px);  /* not too huge */
   letter-spacing: -1.2px;
   line-height: 1.05;
 }
