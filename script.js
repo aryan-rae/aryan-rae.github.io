@@ -24,8 +24,7 @@
 
   if (themeBtn) {
     themeBtn.addEventListener("click", () => {
-      const cur = root.getAttribute("data-theme") === "light" ? "light" : "dark";
-      const next = cur === "dark" ? "light" : "dark";
+      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
       localStorage.setItem("theme", next);
     });
