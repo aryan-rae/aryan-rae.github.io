@@ -214,7 +214,7 @@ html[data-theme="light"] .grid{ opacity:.08; }
   border-radius: 14px;
   border: 1px solid var(--stroke);
   background: rgba(255,255,255,.04);
-  display:none; /* shown on mobile */
+  display:none;
   cursor:pointer;
   position: relative;
 }
@@ -232,13 +232,10 @@ html[data-theme="light"] .grid{ opacity:.08; }
 .burger span:nth-child(3){ top: 28px; }
 
 /* ===========================
-   MOBILE DRAWER (FIXED)
-   - hidden by default
-   - shown only when .open added
-   - overlays content, does NOT block when closed
+   MOBILE DRAWER
 =========================== */
 .drawer{
-  display:none;                 /* IMPORTANT FIX */
+  display:none;
   flex-direction: column;
   gap: 10px;
   width: min(var(--maxw), calc(100% - 2*var(--pad)));
@@ -250,7 +247,7 @@ html[data-theme="light"] .grid{ opacity:.08; }
   backdrop-filter: blur(14px);
   box-shadow: var(--shadow2);
 }
-.drawer.open{ display:flex; }   /* IMPORTANT FIX */
+.drawer.open{ display:flex; }
 .drawer a{
   text-decoration:none;
   padding: 14px 14px;
@@ -268,7 +265,7 @@ html[data-theme="light"] .grid{ opacity:.08; }
   .burger{ display:inline-block; }
 
   .drawer{
-    position: fixed;             /* overlay */
+    position: fixed;
     left: var(--pad);
     right: var(--pad);
     top: calc(10px + var(--topH) + 10px);
@@ -383,7 +380,7 @@ html[data-theme="light"] .grid{ opacity:.08; }
   color: var(--muted);
 }
 
-/* Lists + BIGGER BULLETS (FIX) */
+/* Lists */
 .list{
   margin: 14px 0 0 0;
   padding-left: 22px;
@@ -391,7 +388,7 @@ html[data-theme="light"] .grid{ opacity:.08; }
   line-height: 1.7;
 }
 .list li{ margin: 10px 0; }
-.list li::marker{ font-size: 1.35em; }  /* BIGGER BULLETS */
+.list li::marker{ font-size: 1.35em; }
 
 /* ===========================
    PROJECTS
@@ -505,7 +502,7 @@ html[data-theme="light"] .grid{ opacity:.08; }
 .footer{ margin-top: 28px; }
 .footer__inner{
   display:flex;
-  justify-content: center;   /* CENTER FIX */
+  justify-content: center;
   text-align:center;
   padding: 18px 0;
 }
